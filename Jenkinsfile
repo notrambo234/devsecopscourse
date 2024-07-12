@@ -1,6 +1,8 @@
 pipeline {
     agent any
-
+    tools { 
+         maven 'Maven_3_2_5'  
+    }
     stage('checkout') {
         steps {
             git 'https://github.com/notrambo234/devsecopscourse'
