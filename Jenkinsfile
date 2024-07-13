@@ -1,28 +1,22 @@
 pipeline {
-    agent any
-    tools { 
-         maven 'maven_3_2_5'  
+  agent any
+  tools { 
+        maven 'Maven_3_2_5'  
     }
-   stages {
-    stage('checkout') {
-        steps {
-            git 'https://github.com/notrambo234/devsecopscourse'
-        }
+   stages{
+    stage('CompileandRunSonarAnalysis') {
+            steps {	
+		sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=notrambo234webapp -Dsonar.organization=notrambo234 -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=ec7d419cbca51622d92f9c14accf45e5d9da43c0'
+			}
+        } 
+  
+
+    stage('RunSCAAnalysisUsingSnyk') {
+            steps {
+                                    withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
+                                         sh 'mvn snyk:test -fn'
+                                         }
+                                    }
     }
-    stage('Build') {
-        steps {
-            sh 'mvn install'
-        }
-    }
-    stage('Test'){
-        steps {
-            sh 'mvn test'
-        }
-    }
-    stage('SAST Scan') {
-        steps {
-            sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=notrambo234webapp -Dsonarorganization=notrambo234webapp -Dsonar.host.url=https://sonarcloud.io -Dsobar.token=897a2a92da4c57faa484e2f879b3716be2036e6c'
-        }
-    }
-}
+ }
 }
