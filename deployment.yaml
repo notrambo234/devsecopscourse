@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mcmbuggy-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mcmbuggy
+  template:
+    metadata:
+      labels:
+        app: mcmbuggy
+    spec:
+      containers:
+      - name: mcmbuggy
+        image: 1654654493373.dkr.ecr.us-west-2.amazonaws.com/mcm
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+# service type loadbalancer       
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: mcmbuggy
+    k8s-app: mcmbuggy
+  name: mcmbuggy
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 8080
+  type: LoadBalancer
+  selector:
+    app: mcmbuggy
