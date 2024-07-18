@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: mcmbuggy
-        image: 1654654493373.dkr.ecr.us-west-2.amazonaws.com/mcm
+        image: 654654493373.dkr.ecr.eu-west-3.amazonaws.com/mcm
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
